@@ -13,6 +13,7 @@ export default function Home() {
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('')
     const [error, setError] = React.useState('');
+    const [success, setSuccess] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
     // disables button if fields are empty
@@ -34,7 +35,10 @@ export default function Home() {
         
             const res = await axiosInstance.post('/auth/register', payload)
             if (res?.status === 200) {
-                window.location.href = '/login'
+                setSuccess('User created successfully')
+                setTimeout(() => {
+                    window.location.href = '/login'
+                }, 1500);
             }
     
         } catch (error: any) {
@@ -82,8 +86,13 @@ export default function Home() {
                         <h2 className="text-xl text-bold mb-5">
                             Sign up to Casava
                         </h2>
+                        {success && (
+                            <h2 className="text-sm text-normal bg-green-100 py-4 px-4 mb-5 text-green-600">
+                                {success}
+                            </h2>
+                        )}
                         {error && (
-                            <h2 className="text-sm text-normal bg-red-200 py-4 px-4 mb-5 text-red-600">
+                            <h2 className="text-sm text-normal bg-red-100 py-4 px-4 mb-5 text-red-600">
                                 {error}
                             </h2>
                         )}
