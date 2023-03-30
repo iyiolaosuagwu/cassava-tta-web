@@ -144,7 +144,3 @@ export default function Home() {
         </>
     );
 }
-
-
-// yarn prisma generate  
-// yarn prisma migrate dev
