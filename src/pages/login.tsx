@@ -28,6 +28,7 @@ export default function Login() {
         }, 2000);
     }, [error])
 
+    // handles login api request
     async function handleLogin(payload: INTERFACE.LoginRequestInterface) {
         setLoading(true);
         try {
@@ -50,6 +51,7 @@ export default function Login() {
         }
     }
 
+    // disables button if fields are empty
     const feildsLenght = (!email || !password)
 
     return (

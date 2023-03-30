@@ -30,7 +30,7 @@ export default function Home() {
         }, 2000);
     }, [error])
 
-
+    // handles register api request
     async function handleCreateUser(payload: INTERFACE.RegisterRequestInterface) {
         setLoading(true);
         try {
