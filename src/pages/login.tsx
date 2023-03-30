@@ -21,15 +21,9 @@ export default function Login() {
         }
     }, [])
 
-    // clears error state in 2 seconds
-    useEffect(() => {
-        setTimeout(() => {
-            setError('')
-        }, 2000);
-    }, [error])
-
     // handles login api request
     async function handleLogin(payload: INTERFACE.LoginRequestInterface) {
+        setError('') // clear error state
         setLoading(true);
         try {
         

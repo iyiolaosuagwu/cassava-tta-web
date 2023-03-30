@@ -15,6 +15,9 @@ export default function Home() {
     const [error, setError] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
+    // disables button if fields are empty
+    const feildsLenght = (!email || !password || !username || !confirmPassword)
+
     // check if userInfo authenticated
     useEffect(() => {
         const userInfoFromStorage = localStorage.getItem('userInfo') 
@@ -23,15 +26,9 @@ export default function Home() {
         }
     }, [])
 
-    // clears error state in 2 seconds
-    useEffect(() => {
-        setTimeout(() => {
-            setError('')
-        }, 2000);
-    }, [error])
-
     // handles register api request
-    async function handleCreateUser(payload: INTERFACE.RegisterRequestInterface) {
+    async function handleCreateUser(payload: INTERFACE.RegisterRequestInterface) {        
+        setError('') // clear error state
         setLoading(true);
         try {
         
@@ -61,9 +58,6 @@ export default function Home() {
             })
         }
     }
-
-    // disables button if fields are empty
-    const feildsLenght = (!email || !password || !username || !confirmPassword)
 
     return (
         <>
