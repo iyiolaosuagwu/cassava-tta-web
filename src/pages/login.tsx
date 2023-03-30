@@ -7,17 +7,15 @@ import * as INTERFACE from '@/dtos/index';
 import axiosInstance from "@/config/axios";
 import Link from "next/link";
 
-export default function Home() {
+export default function Login() {
     const [email, setEmail] = React.useState('');
-    const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [confirmPassword, setConfirmPassword] = React.useState('')
     const [error, setError] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
     // check if userInfo authenticated
     useEffect(() => {
-        const userInfoFromStorage = localStorage.getItem('userInfo') 
+        const userInfoFromStorage = localStorage.getItem('userInfo')
         if (userInfoFromStorage) {
             window.location.href = '/home'
         }
@@ -30,40 +28,29 @@ export default function Home() {
         }, 2000);
     }, [error])
 
-
-    async function handleCreateUser(payload: INTERFACE.RegisterRequestInterface) {
+    async function handleLogin(payload: INTERFACE.LoginRequestInterface) {
         setLoading(true);
         try {
         
-            const res = await axiosInstance.post('/auth/register', payload)
+            const res = await axiosInstance.post('/auth/login', payload)
             if (res?.status === 200) {
-                window.location.href = '/login'
+                localStorage.setItem('userInfo', JSON.stringify(res.data.data))
+                window.location.href = '/home'
             }
     
         } catch (error: any) {
+
             const e = error.response && error.response.data.message
             ? error.response.data.message
             : error.message;
             setError(e);
+
         } finally {
             setLoading(false);
         }
     }
 
-    const submitHandler = () => {
-        if (password !== confirmPassword) {
-            setError('Passwords do not match')
-        } else {
-            handleCreateUser({
-                email,
-                username,
-                password
-            })
-        }
-    }
-
-    // disables button if fields are empty
-    const feildsLenght = (!email || !password || !username || !confirmPassword)
+    const feildsLenght = (!email || !password)
 
     return (
         <>
@@ -85,9 +72,9 @@ export default function Home() {
                         Casava Project
                     </h1>
                     <div className="grow min-h-64 border-2 border-black w-full p-5 md:p-10">
-                        <h2 className="text-xl text-bold mb-5">
-                            Sign up to Casava
-                        </h2>
+                        <p className="text-xl text-bold mb-5">
+                            Sign In To Your Account
+                        </p>
                         {error && (
                             <h2 className="text-sm text-normal bg-red-200 py-4 px-4 mb-5 text-red-600">
                                 {error}
@@ -96,14 +83,6 @@ export default function Home() {
                         <div
                             className="flex flex-col gap-y-4"
                         >
-                            <Input
-                                label="Username"
-                                placeholder="Iyiola"
-                                type="text"
-                                name="username"
-                                value={username}
-                                onChange={(e: any) => setUsername(e.target.value)}
-                            />
                             <Input
                                 label="Email"
                                 placeholder="test@email.com"
@@ -120,20 +99,13 @@ export default function Home() {
                                 value={password}
                                 onChange={(e: any) => setPassword(e.target.value)}
                             />
-                            <Input
-                                label="Confirm Password"
-                                placeholder="Confirm Password"
-                                name="confirmPassword"
-                                secure
-                                value={confirmPassword}
-                                onChange={(e: any) => setConfirmPassword(e.target.value)}
-                            />
-                            <Button disabled={feildsLenght} 
-                                onClick={() => submitHandler()}
-                            >Sign Up</Button>
+                            <Button disabled={feildsLenght} onClick={() => handleLogin({
+                                email,
+                                password
+                            })}>Sign In</Button>
                             <div className="flex items-center justify-center">
-                                <Link href="/login" className="text-md text-bold mb-5 text-center w-fit ">
-                                    Sign In
+                                <Link href="/" className="text-md text-bold mb-5 text-center w-fit ">
+                                    Sign Up
                                 </Link>
                             </div>
                         </div>
@@ -144,7 +116,3 @@ export default function Home() {
         </>
     );
 }
-
-
-// yarn prisma generate  
-// yarn prisma migrate dev
