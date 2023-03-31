@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 export default function Home() {
     const [user, setUser]: any = React.useState({});
 
+    // check if user authenticated
     useEffect(() => {
       const userInfoFromStorage: any = localStorage.getItem('userInfo')
       const parsedUserInfo = JSON.parse(userInfoFromStorage) || null
@@ -13,7 +14,7 @@ export default function Home() {
 
     const handelLogout = () => {
       localStorage.clear()
-      window.location.href = '/'
+      window.location.href = '/login'
     }
 
     return (
