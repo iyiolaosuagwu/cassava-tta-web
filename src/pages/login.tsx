@@ -13,7 +13,7 @@ export default function Login() {
     const [error, setError] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
-    // check if userInfo authenticated
+    // check if user authenticated
     useEffect(() => {
         const userInfoFromStorage = localStorage.getItem('userInfo')
         if (userInfoFromStorage) {
